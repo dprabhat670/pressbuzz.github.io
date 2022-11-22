@@ -1,8 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice , createAsyncThunk } from '@reduxjs/toolkit';
+
+export const fetchNews = createAsyncThunk(
+	'fetchnewsdata',
+	async () => {
+	  const res = await fetch('https://newsapi.org/v2/everything?q=Apple&from=2022-11-21&sortBy=popularity&apiKey=12735be93933463abd09d7f98cc28111').then((res)=>res.json())
+	  }
+  )
 
 const initialState = {
-article: [],
-favourite: [],
+articles: [],
+favourite: []
 };
 
 const newsSlice = createSlice({
@@ -16,13 +23,22 @@ initialState,
 // Reducer methods
 reducers: {
 	addArticle: (state, { payload }) => {
-	state.name.push(payload);
+	state.articles.push(payload);
 	},
 
 	addFavourite: (state, { payload }) => {
-	state.fav.push(payload);
+	state.favourite.push(payload);
 	},
 },
+extraReducers: ()=> {
+   
+    (fetchNews.fulfilled, (state, action) => {
+  
+      state.articles.push(action.payload);
+	  
+    })
+	
+  }
 });
 
 // Action creators for each reducer method
