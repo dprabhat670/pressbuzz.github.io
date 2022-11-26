@@ -1,23 +1,38 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Card from '../components/Card'
-import {useSelector , useDispatch} from 'react-redux';
-import { fetchNews} from '../redux/slice';
+import { FlatList } from 'react-native';
 
 
 const NewsListScreen =(props)=>{
- 
-  const dispatch = useDispatch();
-  
-  const articles = useSelector((state) => state.news.articles);
- 
- useEffect(()=>{
-      dispatch(fetchNews(articles))
-    },[dispatch])
+ const [data , setData] = useState([]);
 
-  console.log(articles)
+  const url = 'https://newsapi.org/v2/everything?q=Apple&from=2022-11-21&sortBy=popularity&apiKey=12735be93933463abd09d7f98cc28111'
+  
+
+  useEffect(()=>{
+    fetch(url)
+    .then((res)=>res.json())
+    .then((json)=>{
+    setData(json.articles)
+  })
+  .catch((error)=>console.log("Error hai" , error))
+  },[])
 
   return (
-        <Card navigation={props.navigation} />
+    <FlatList
+    data={data}
+    keyExtractor={(item)=>item.url}
+    renderItem={({item})=>(
+     <Card navigation={props.navigation} 
+     title={item.title}
+     image={item.urlToImage}
+     description={item.description}
+     />
+    
+     )}
+
+    />
+      
         
     )
   

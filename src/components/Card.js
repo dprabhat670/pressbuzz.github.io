@@ -1,20 +1,19 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import newsimg1 from "D:/codeputs/android dev/newsApp/assets/42f2cc9ac3540d60c39ac7e7a6023cb9.webp";
 import {MaterialIcons} from '@expo/vector-icons'
 export default function card(props) {
   return (
     <TouchableOpacity onPress={()=>props.navigation.navigate('NewsDetails')}>
     <View style={styles.card}>
       <View style={styles.imageWrapper}>
-        <Image source={newsimg1} alt="img" style={styles.image}/>
+        <Image source={{uri:props.image}} alt="img" style={styles.image}/>
       </View>
       <View style={styles.textWrapper}>
-        <Text style={styles.title}>Title goes here </Text>
+        <Text style={styles.title}>{props.title.length > 25? props.title.slice(0,25) + "..." : props.title }</Text>
         <MaterialIcons name="favorite-border" size={24} color="#FF00FF" />
       </View>
       <View style={styles.descriptionWrapper}>
-        <Text style={styles.description}>Description goes here ! </Text>
+        <Text style={styles.description}>{props.description.length > 100 ? props.description.slice(0,100) + '...' : props.description} </Text>
       </View>
     </View>
     </TouchableOpacity>
@@ -24,8 +23,8 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#ffffff",
     height: 300,
-    marginVertical: 25,
-    marginHorizontal: 15,
+    marginVertical: 15,
+    marginHorizontal: 10,
     borderRadius: 10,
     shadowColor: "black",
     shadowOpacity: "0.25",
@@ -49,7 +48,7 @@ const styles = StyleSheet.create({
     marginTop:10,
   },
   descriptionWrapper: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 15
   },
   image :{
     height:'120%',
@@ -57,8 +56,8 @@ const styles = StyleSheet.create({
   },
   title :{
     
-    
-    fontSize:15,
+    fontWeight:'bold',
+    fontSize:16,
   },
   description:{
    
